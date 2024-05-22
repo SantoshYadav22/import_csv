@@ -12,4 +12,9 @@ class Contact extends Model
     protected $table = 'contacts';
 
     protected $fillable = ['name', 'email', 'phone'];
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'contact_groups');
+    }
 }

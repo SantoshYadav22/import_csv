@@ -1,20 +1,30 @@
 <?php
 
 // app/Imports/ContactsImport.php
-
 namespace App\Imports;
 
 use App\Models\Contact;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ContactsImport implements ToModel
+class ContactsImport implements ToCollection, WithHeadingRow
 {
-    public function model(array $row)
+    public function collection(Collection $rows)
     {
-        return new Contact([
-            'name' => $row[0],
-            'email' => $row[1],
-            'phone' => $row[2],
-        ]);
+        foreach ($rows->skip(1) as $row) {
+            $existingContact = Contact::where('email', $row['email'])->first();
+
+            if ($existingContact) {
+                return null;
+            }
+
+            Contact::create([
+                'name'     => $row['name'],
+                'email'    => $row['email'],
+                'phone'    => $row['phone'],
+                // 'user_id'  => auth()->id(),
+            ]);
+        }
     }
 }

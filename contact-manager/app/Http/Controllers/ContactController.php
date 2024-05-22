@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use App\Models\ContactGroup;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ContactsImport;
@@ -13,7 +14,7 @@ class ContactController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     public function index(Request $request)
@@ -36,9 +37,10 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
             'email' => 'required|string|email|max:255|unique:contacts',
-            'phone' => 'nullable|string|max:20'
+            'phone' => 'nullable|string|min:10|max:10|regex:/^[0-9]+$/',
+
         ]);
 
         Contact::create($request->all());
@@ -58,9 +60,10 @@ class ContactController extends Controller
     public function update(Request $request, Contact $contact)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
             'email' => 'required|string|email|max:255|unique:contacts,email,' . $contact->id,
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|min:10|max:10|regex:/^[0-9]+$/',
+
         ]);
 
         $contact->update($request->all());
@@ -85,5 +88,12 @@ class ContactController extends Controller
     public function export()
     {
         return Excel::download(new ContactsExport, 'contacts.xlsx');
+    }
+
+    public function view_group(Request $request){
+        $groups = ContactGroup::all();
+        
+        return view('contacts.view_group', compact('groups'));
+
     }
 }
