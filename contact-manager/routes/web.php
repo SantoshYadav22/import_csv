@@ -30,3 +30,4 @@ Route::get('load-more-contacts', [ContactGroupController::class, 'loadMoreContac
 
 Route::get('/groups/create', [ContactGroupController::class, 'create_group'])->name('groups.create');
 Route::post('/groups', [ContactGroupController::class, 'store_group'])->name('groups.store');
+
