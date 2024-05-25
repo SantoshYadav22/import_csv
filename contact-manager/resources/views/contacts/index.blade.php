@@ -7,6 +7,8 @@
     <h1>Contact List</h1>
     <a href="{{ route('contacts.create') }}" class="btn btn-primary mb-3">Add Contact</a>
     <a href="{{ route('contacts_export') }}" class="btn btn-success mb-3">Export Contacts</a>
+    <a href="{{ route('view_group') }}"      class="btn btn-danger mb-3"> View Group</a>
+    <input id="myInput" type="text" class="form-control" placeholder="Search.."><br>
 
     @if ($message = Session::get('success'))
         <div class="alert alert-success">
@@ -22,7 +24,7 @@
         </div>
     </form>
 
-    <table class="table table-bordered">
+    <table id="myTable" class="table table-bordered">
         <tr>
             <th>ID</th>
             <th><a href="{{ route('contacts.index', ['sort_by' => 'name', 'sort_direction' => request('sort_direction') == 'asc' ? 'desc' : 'asc']) }}">Name</a></th>

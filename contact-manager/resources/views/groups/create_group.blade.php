@@ -7,7 +7,6 @@
         <a href="{{ route('contacts.create') }}" class="btn btn-primary mb-3">Add Contact</a>
         <a href="{{ route('view_group') }}" class="btn btn-success mb-3">View Group</a>
 
-
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -18,7 +17,7 @@
             <div class="form-group">
                 <label for="name">Group Name</label>
                 <input type="text" class="form-control" id="name" name="name" required>
-            </div>
+            </div><br>
             <button type="submit" class="btn btn-primary">Create</button>
         </form>
     </div>

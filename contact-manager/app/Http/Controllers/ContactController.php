@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ContactsImport;
 use App\Exports\ContactsExport;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContactUpdated;
+
 
 class ContactController extends Controller
 {
@@ -66,7 +69,18 @@ class ContactController extends Controller
 
         ]);
 
+        // $contact->update($request->all());
+        // return redirect()->route('contacts.index')->with('success', 'Contact updated successfully.');
+
+        $originalData = $contact->getOriginal();
+
         $contact->update($request->all());
+
+        $changes = $this->getChanges($originalData, $contact->getChanges());
+
+        // Send email notification
+        Mail::to($contact->email)->send(new ContactUpdated($contact, $changes));
+
         return redirect()->route('contacts.index')->with('success', 'Contact updated successfully.');
     }
 
@@ -95,5 +109,26 @@ class ContactController extends Controller
         
         return view('contacts.view_group', compact('groups'));
 
+    }
+
+    protected function getChanges($original, $changes)
+    {
+        $result = [];
+        // print_r($original);
+        
+        foreach ($changes as $field => $newValue) {
+            if (isset($original[$field])) {
+                $result[$field] = [
+                    'old' => $original[$field],
+                    'new' => $newValue,
+                ];
+            } else {
+                $result[$field] = [
+                    'old' => 'N/A',
+                    'new' => $newValue,
+                ];
+            }
+        }
+        return $result;
     }
 }

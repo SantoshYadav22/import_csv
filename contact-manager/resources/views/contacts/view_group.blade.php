@@ -5,13 +5,13 @@
 ?>
 
 @section('content')
-<div class = "container mt-5">
+<div class = "container">
     <h1>Contacts and Groups</h1>
     <a href="{{ route('contacts.create') }}" class="btn btn-primary mb-3">Add Contact</a>
-    <a href="{{ route('groups.create') }}" class="btn btn-success mb-3">create Group</a>
+    <a href="{{ route('groups.create') }}" class="btn btn-success mb-3">Create Group</a>
+    <input id="myInput" type="text" class="form-control" placeholder="Search.."><br>
 
-
-    <table class = "table table-bordered">
+    <table id="myTable" class = "table table-bordered">
         <thead>
             <tr>
                 <th>Group Name</th>

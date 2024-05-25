@@ -18,7 +18,7 @@
 
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
-            <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $contact->name) }}" required>
+            <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $contact->name) }}" required pattern="[a-zA-Z\s]+" title="Name should only contain letters and spaces.">
             @error('name')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -38,7 +38,7 @@
 
         <div class="mb-3">
             <label for="phone" class="form-label">Phone</label>
-            <input type="text" name="phone" id="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone', $contact->phone) }}" required>
+            <input type="text" name="phone" id="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone', $contact->phone) }}" required pattern="[0-9]{10}" title="Phone number should be 10 digits.">
             @error('phone')
                 <div class="invalid-feedback">
                     {{ $message }}
